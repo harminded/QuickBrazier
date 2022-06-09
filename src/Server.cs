@@ -18,6 +18,8 @@ namespace QuickBrazier
             ComponentType.ReadOnly(Il2CppType.Of<Bonfire>())
         };
 
+        private static readonly PrefabGUID BoneGUID = new(1821405450);
+
         private static readonly Dictionary<Entity, DateTime> CooldownTracker = new();
 
         public static void ToggleNearestBrazier(FromCharacter fromCharacter, ToggleBrazierMessage msg)
@@ -32,13 +34,35 @@ namespace QuickBrazier
             {
                 return;
             }
-
+            
             CooldownTracker[fromCharacter.Character] = DateTime.Now;
 
             Entity brazier = FindClosestBrazierInRange(fromCharacter.Character);
             if (brazier != Entity.Null)
             {
-                ToggleBrazier(brazier);
+                ToggleBrazier(brazier, out bool isBurning);
+                if (isBurning)
+                {
+                    AddBonesIfEmpty(fromCharacter, brazier);    
+                }
+            }
+        }
+
+        public static void AddBonesIfEmpty(FromCharacter fromCharacter, Entity brazier)
+        {
+            InventoryUtilities.TryGetInventoryEntity(VWorld.Server.EntityManager, fromCharacter.Character, out Entity playerInventory);
+            InventoryUtilities.TryGetInventoryEntity(VWorld.Server.EntityManager, brazier, out Entity brazierInventory);
+            var gameDataSystem = VWorld.Server.GetExistingSystem<GameDataSystem>();
+
+            int playerBoneCount = InventoryUtilities.ItemCount(VWorld.Server.EntityManager, playerInventory, BoneGUID);
+            int brazierBoneCount = InventoryUtilities.ItemCount(VWorld.Server.EntityManager, brazierInventory, BoneGUID);
+            if (playerBoneCount > 0 && brazierBoneCount == 0)
+            {
+                InventoryUtilities.TryGetItemSlot(VWorld.Server.EntityManager, playerInventory, BoneGUID, out int slotId);
+                InventoryUtilitiesServer.SplitItemStacks(VWorld.Server.EntityManager, gameDataSystem.ItemHashLookupMap,
+                    playerInventory, slotId);
+                InventoryUtilitiesServer.TryMoveItem(VWorld.Server.EntityManager, gameDataSystem.ItemHashLookupMap,
+                    playerInventory, slotId, brazierInventory, out bool moved);
             }
         }
 
@@ -79,11 +103,12 @@ namespace QuickBrazier
             return new Vector3(localToWorld.Position.x, localToWorld.Position.y, localToWorld.Position.z);
         }
 
-        private static void ToggleBrazier(Entity brazier)
+        private static void ToggleBrazier(Entity brazier, out bool isBurning)
         {
             var brazierComponentData = VWorld.Server.EntityManager.GetComponentData<BurnContainer>(brazier);
             brazierComponentData.Enabled = !brazierComponentData.Enabled;
             VWorld.Server.EntityManager.SetComponentData(brazier, brazierComponentData);
+            isBurning = brazierComponentData.Enabled;
         }
     }
 }

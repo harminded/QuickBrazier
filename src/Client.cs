@@ -41,7 +41,6 @@ namespace QuickBrazier
                  Input.GetKeyInt(configKeybinding.Secondary)) &&
                 DateTime.Now - _lastInventoryTransfer > TimeSpan.FromSeconds(0.25))
             {
-                Plugin.Debug("BRAZIER");
                 _lastInventoryTransfer = DateTime.Now;
                 ToggleBrazier();
             }

@@ -4,7 +4,7 @@
         <TargetFramework>netstandard2.1</TargetFramework>
         <AssemblyName>quick_brazier</AssemblyName>
         <Description>Toggle braziers on/off with a hotkey.</Description>
-        <Version>0.1.0</Version>
+        <Version>0.2.0</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>latest</LangVersion>
         <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
