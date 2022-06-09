@@ -1,0 +1,7 @@
+{
+  "name": "QuickBrazier",
+  "description": "Hotkey (L) to quickly toggle mist braziers",
+  "version_number": "0.1.0",
+  "website_url": "https://github.com/vildaberper/VRisingModding/tree/main/PPRising",
+  "dependencies": ["BepInEx-BepInExPack_V_Rising-1.0.0", "molenzwiebel-Wetstone-1.1.0"]
+}
