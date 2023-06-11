@@ -4,11 +4,11 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Transforms;
 using UnityEngine;
-using Wetstone.API;
+using Bloodstone.API;
 
 namespace QuickBrazier.Server;
 
-public class ManualToggle
+public static class ManualToggle
 {
     private static readonly PrefabGUID BoneGuid = new(1821405450);
     
@@ -86,15 +86,15 @@ public class ManualToggle
         InventoryUtilities.TryGetInventoryEntity(VWorld.Server.EntityManager, brazier, out Entity brazierInventory);
         var gameDataSystem = VWorld.Server.GetExistingSystem<GameDataSystem>();
 
-        int playerBoneCount = InventoryUtilities.ItemCount(VWorld.Server.EntityManager, playerInventory, BoneGuid);
-        int brazierBoneCount = InventoryUtilities.ItemCount(VWorld.Server.EntityManager, brazierInventory, BoneGuid);
+        int playerBoneCount = InventoryUtilities.GetItemAmount(VWorld.Server.EntityManager, playerInventory, BoneGuid);
+        int brazierBoneCount = InventoryUtilities.GetItemAmount(VWorld.Server.EntityManager, brazierInventory, BoneGuid);
         if (playerBoneCount > 0 && brazierBoneCount == 0)
         {
             InventoryUtilities.TryGetItemSlot(VWorld.Server.EntityManager, playerInventory, BoneGuid, out int slotId);
             InventoryUtilitiesServer.SplitItemStacks(VWorld.Server.EntityManager, gameDataSystem.ItemHashLookupMap,
                 playerInventory, slotId);
             InventoryUtilitiesServer.TryMoveItem(VWorld.Server.EntityManager, gameDataSystem.ItemHashLookupMap,
-                playerInventory, slotId, brazierInventory, out bool moved);
+                playerInventory, slotId, brazierInventory);
         }
     }
 }
