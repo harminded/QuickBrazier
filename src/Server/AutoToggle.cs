@@ -5,11 +5,11 @@ using ProjectM;
 using ProjectM.Network;
 using ProjectM.Scripting;
 using Unity.Entities;
-using Wetstone.API;
+using Bloodstone.API;
 
 namespace QuickBrazier.Server;
 
-public class AutoToggle
+public static class AutoToggle
 {
     public static void OnTimeOfDayChanged(TimeOfDay timeOfDay)
     {
@@ -62,7 +62,7 @@ public class AutoToggle
         foreach (var entity in entities)
         {
             var bonfireTeam = VWorld.Server.EntityManager.GetComponentData<Team>(entity);
-            if (onlineTeams.Any(onlineTeam => serverGameManager._TeamChecker.IsAllies(bonfireTeam, onlineTeam)))
+            if (onlineTeams.Any(onlineTeam => serverGameManager != null && serverGameManager.Value.IsAllies(bonfireTeam, onlineTeam)))
             {
                 onlineBraziers.Add(entity);
             }

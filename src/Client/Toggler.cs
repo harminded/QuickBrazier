@@ -1,6 +1,6 @@
 ﻿using System;
+using Bloodstone.API;
 using UnityEngine;
-using Wetstone.API;
 
 namespace QuickBrazier.Client;
 
@@ -18,10 +18,8 @@ public class Toggler
         }
     }
 
-    private void ToggleBrazier()
+    private static void ToggleBrazier()
     {
-        VNetwork.SendToServerStruct<ToggleBrazierMessage>(new()
-        {
-        });
+        VNetwork.SendToServerStruct(new ToggleBrazierMessage());
     }
 }

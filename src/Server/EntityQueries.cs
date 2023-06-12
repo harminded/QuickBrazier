@@ -1,13 +1,13 @@
-﻿using ProjectM;
+﻿using Bloodstone.API;
+using Il2CppInterop.Runtime;
+using ProjectM;
 using ProjectM.Network;
-using UnhollowerRuntimeLib;
 using Unity.Collections;
 using Unity.Entities;
-using Wetstone.API;
 
 namespace QuickBrazier.Server;
 
-public class EntityQueries
+public static class EntityQueries
 {
     private static readonly ComponentType[] BrazierComponents =
     {

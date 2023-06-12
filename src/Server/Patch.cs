@@ -1,16 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using HarmonyLib;
-using ProjectM;
 using ProjectM.Gameplay.Systems;
-using ProjectM.Network;
-using Unity.Collections;
-using Unity.Entities;
-using Wetstone.API;
 
 namespace QuickBrazier.Server;
 
 [HarmonyPatch]
-public class Patch
+public static class Patch
 {
     private static DayNightCycleTracker _dayNightCycleTracker;
 
@@ -20,13 +15,19 @@ public class Patch
         _dayNightCycleTracker.OnTimeOfDayChanged += AutoToggle.OnTimeOfDayChanged;
     }
 
-    [HarmonyPatch(typeof(HandleGameplayEventsSystem), nameof(HandleGameplayEventsSystem.OnUpdate))]
+    [HarmonyPatch(typeof(HandleGameplayEventsBase), nameof(HandleGameplayEventsBase.OnUpdate))]
     [HarmonyPostfix]
-    private static void OnUpdate(HandleGameplayEventsSystem __instance)
+    public static void HandleGameplayEventsBase_Patch(ref HandleGameplayEventsBase __instance)
     {
         if (!Plugin.AutoToggleEnabled.Value) return;
-        _dayNightCycleTracker.Update(__instance._DayNightCycle.GetSingleton());
+        if(__instance._ScriptMapper == null) return; 
+        try
+        {
+            _dayNightCycleTracker.Update(__instance._ScriptMapper._DayNightCycleAccessor.GetSingleton());
+        }
+        catch (Exception)
+        {
+            //fail silently
+        }
     }
-
-    
 }

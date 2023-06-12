@@ -2,20 +2,20 @@
 using System.Runtime.CompilerServices;
 using BepInEx;
 using BepInEx.Configuration;
-using BepInEx.IL2CPP;
 using BepInEx.Logging;
+using BepInEx.Unity.IL2CPP;
+using Bloodstone.API;
 using HarmonyLib;
 using QuickBrazier.Server;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
-using Wetstone.API;
 using Patch = QuickBrazier.Client.Patch;
 
 namespace QuickBrazier
 {
-    [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
-    [BepInDependency("xyz.molenzwiebel.wetstone")]
+    [BepInPlugin("quick_brazier", "QuickBrazier", "0.4.0")]
+    [BepInDependency("gg.deca.Bloodstone")]
     [Reloadable]
     public class Plugin : BasePlugin
     {
@@ -51,12 +51,12 @@ namespace QuickBrazier
             }
 
             _hooks = Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
-            Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+            Log.LogInfo($"Plugin QuickBrazier is loaded!");
         }
 
         private static void RegisterKeybind()
         {
-            ConfigKeybinding = KeybindManager.Register(new()
+            ConfigKeybinding = KeybindManager.Register(new KeybindingDescription
             {
                 Id = "harminded.quickbrazier.toggle",
                 Category = "QuickBrazier",
