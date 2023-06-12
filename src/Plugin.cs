@@ -56,7 +56,7 @@ namespace QuickBrazier
 
         private static void RegisterKeybind()
         {
-            ConfigKeybinding = KeybindManager.Register(new()
+            ConfigKeybinding = KeybindManager.Register(new KeybindingDescription
             {
                 Id = "harminded.quickbrazier.toggle",
                 Category = "QuickBrazier",
