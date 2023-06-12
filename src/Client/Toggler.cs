@@ -18,10 +18,8 @@ public class Toggler
         }
     }
 
-    private void ToggleBrazier()
+    private static void ToggleBrazier()
     {
-        VNetwork.SendToServerStruct<ToggleBrazierMessage>(new()
-        {
-        });
+        VNetwork.SendToServerStruct(new ToggleBrazierMessage());
     }
 }
