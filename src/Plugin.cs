@@ -14,22 +14,22 @@ using Patch = QuickBrazier.Client.Patch;
 
 namespace QuickBrazier
 {
-    [BepInPlugin("quick_brazier", "QuickBrazier", "0.4.0")]
+    [BepInPlugin("quick_brazier", "QuickBrazier", "0.4.1")]
     [BepInDependency("gg.deca.Bloodstone")]
     [Reloadable]
     public class Plugin : BasePlugin
     {
-        public static ManualLogSource Logger;
-        public static ConfigEntry<float> Range;
-        public static ConfigEntry<bool> AutoToggleEnabled;
-        public static Keybinding ConfigKeybinding;
-        private Harmony _hooks;
+        private static ManualLogSource Logger { get;set; }
+        public static ConfigEntry<float> Range { get; private set; }
+        public static ConfigEntry<bool> AutoToggleEnabled { get;private set; }
+        public static Keybinding ConfigKeybinding { get;private set; }
+        private Harmony Harmony { get; set; }
 
         private void InitConfig()
         {
-            Range = Config.Bind("Server", "range", 5.0f,
+            Range = Config.Bind("Server", "Range", 5.0f,
                 "Maximum distance to toggle Mist Braziers. 5 'distance' is about 1 tile.");
-            AutoToggleEnabled = Config.Bind("Server", "autoToggleEnabled", true,
+            AutoToggleEnabled = Config.Bind("Server", "Auto Toggle Enabled", true,
                 "Turn braziers on when day starts, and off during the night starts, for online players/clans only.");
         }
 
@@ -50,7 +50,7 @@ namespace QuickBrazier
                 Server.Patch.Load();
             }
 
-            _hooks = Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
+            Harmony = Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
             Log.LogInfo($"Plugin QuickBrazier is loaded!");
         }
 
@@ -79,7 +79,7 @@ namespace QuickBrazier
                 UnregisterKeybind();
             }
 
-            _hooks.UnpatchSelf();
+            Harmony.UnpatchSelf();
             return true;
         }
 
@@ -102,7 +102,7 @@ namespace QuickBrazier
         public static void DebugNativeArray(NativeArray<Entity> nativeArray, [CallerLineNumber] int lineNumber = 0,
             [CallerMemberName] string caller = null)
         {
-            for (int i = 0; i < nativeArray.Length; i++)
+            for (var i = 0; i < nativeArray.Length; i++)
             {
                 Logger.LogInfo($"[{caller}:{lineNumber}]: {nativeArray[i].ToString()} ({nativeArray[i].GetType()})");
             }
@@ -111,7 +111,7 @@ namespace QuickBrazier
         public static void DebugComponentTypes(NativeArray<ComponentType> nativeArray,
             [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string caller = null)
         {
-            for (int i = 0; i < nativeArray.Length; i++)
+            for (var i = 0; i < nativeArray.Length; i++)
             {
                 Logger.LogInfo($"[{caller}:{lineNumber}]: {nativeArray[i].ToString()} ({nativeArray[i].GetType()})");
             }
