@@ -1,3 +1,6 @@
+`0.4.1`
+* Added check to prevent mod running prior to the server being ready
+
 `0.4.0`
 * Gloomrot update
 
