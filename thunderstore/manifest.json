@@ -1,7 +1,7 @@
 {
   "name": "QuickBrazier",
   "description": "Auto turn on/off based on time of day. Hotkey (L) to quickly toggle mist braziers, also adds bones if brazier is empty.",
-  "version_number": "0.4.0",
+  "version_number": "0.4.1",
   "website_url": "https://github.com/p1xel8ted/QuickBrazier",
   "dependencies": ["BepInEx-BepInExPack_V_Rising-1.668.5", "deca-Bloodstone-0.1.4"]
 }
