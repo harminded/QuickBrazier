@@ -23,7 +23,7 @@ Original mod by [Harminded](https://v-rising.thunderstore.io/package/Harminded/)
 Config file is located at `(VRising client/server folder)/VRising/BepInEx/config/quick_brazier.cfg`
 
 ```
-## Settings file was created by plugin quick_brazier v0.4.0
+## Settings file was created by plugin quick_brazier v0.4.1
 ## Plugin GUID: quick_brazier
 
 [Server]
